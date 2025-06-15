@@ -37,14 +37,14 @@ namespace IntelligenceInvestigation.Entities
         }
         public bool AddOrChangeSensor(int index , Sensor val)
         {
-            if (index < SensorTypes.Count && ActivatSensor.Count > index)
-            {
-                ActivatSensor[index] = val;
-                return true;
-            }
-            else if (index >= ActivatSensor.Count)
+            if (index == -1 && index < ActivatSensor.Count )
             {
                 ActivatSensor.Add(val);
+                return true;
+            }
+            else if (index < SensorTypes.Count && ActivatSensor.Count > index && index > 0)
+            {
+                ActivatSensor[index] = val;
                 return true;
             }
             else
