@@ -9,11 +9,11 @@ namespace IntelligenceInvestigation.Entities
 {
     public class IranianAgent
     {
-        public static Sensor[] ActivatSensor = new Sensor[2];
+        public List<Sensor> ActivatSensor = new List<Sensor>();
         public string Name { get; set; }
         public string Rank { get; set; }
-        public string[] SensorTypes;
-        public IranianAgent(string name, string rank, string[] sensorTypes)
+        public List<string> SensorTypes;
+        public IranianAgent(string name, string rank, List<string> sensorTypes)
         {
             Name = name;
             Rank = rank;
@@ -34,6 +34,23 @@ namespace IntelligenceInvestigation.Entities
                 }
             }
             return HitStamp;
+        }
+        public bool AddOrChangeSensor(int index , Sensor val)
+        {
+            if (index < SensorTypes.Count && ActivatSensor.Count > index)
+            {
+                ActivatSensor[index] = val;
+                return true;
+            }
+            else if (index >= ActivatSensor.Count)
+            {
+                ActivatSensor.Add(val);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
     }
