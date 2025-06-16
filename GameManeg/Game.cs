@@ -4,22 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IntelligenceInvestigation.Entities;
+using IntelligenceInvestigation.Factory;
 
 namespace IntelligenceInvestigation.GameManeg
 {
     public static class Game
     {
-        static IranianAgent iranianAgent = new IranianAgent("muhamad", "junior",new List<string>{"basic","basic"});
+        static IranianAgent iranianAgent = AgentFactory.StartInstans();
         public static void StartGame()
         {
             Console.WriteLine("Hello and welcome to the game.\n" +
                 $"You are investigating Agent {iranianAgent.Name}"
                 );
             int won = 0;
-            while (won != iranianAgent.SensorTypes.Count)
+            while (won != iranianAgent.LenTypes)
             {
                 Console.WriteLine($"At what location would you like to insert the sensor?\n" +
-                    $" (0-{iranianAgent.SensorTypes.Count-1}) or anter -1 to add to the end");
+                    $" (0-{iranianAgent.LenTypes-1}) or anter -1 to add to the end");
                 int index = int.Parse(Console.ReadLine()!);
                 Console.WriteLine("Enter the type of sensor you would like to insert: ");
                 string type = Console.ReadLine()!;
@@ -27,7 +28,7 @@ namespace IntelligenceInvestigation.GameManeg
                 if (iranianAgent.AddOrChangeSensor(index, sensor))
                 {
                     int temp = iranianAgent.Adjustment();
-                    Console.WriteLine($"You scored {temp}/{iranianAgent.SensorTypes.Count} times");
+                    Console.WriteLine($"You scored {temp}/{iranianAgent.LenTypes} times");
                     won = temp;
                 }
                 else
