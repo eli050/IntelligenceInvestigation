@@ -24,7 +24,7 @@ namespace IntelligenceInvestigation.GameManeg
                 int index = int.Parse(Console.ReadLine()!);
                 Console.WriteLine("Enter the type of sensor you would like to insert: ");
                 string type = Console.ReadLine()!;
-                Sensor sensor = new Sensor(type);
+                AudioSensor sensor = new AudioSensor(type);
                 if (iranianAgent.AddOrChangeSensor(index, sensor))
                 {
                     int temp = iranianAgent.Adjustment();

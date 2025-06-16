@@ -6,16 +6,14 @@ using System.Threading.Tasks;
 
 namespace IntelligenceInvestigation.Entities
 {
-    public class Sensor
+    public abstract class Sensor
     {
         public string Type { get; set; }
         public Sensor(string type)
         {
             Type = type;
         }
-        public bool Activate(string SensorType)
-        {
-            return Type == SensorType;
-        }
+        public abstract bool Activate(string SensorType);
+        
     }
 }
