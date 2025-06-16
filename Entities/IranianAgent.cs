@@ -65,6 +65,11 @@ namespace IntelligenceInvestigation.Entities
                         types.RemoveAt(i);
                         break;
                     }
+                    if (sensor.broken)
+                    {
+                        //HitStamp--;
+                        ActivatSensor.Remove(sensor);  
+                    }
                 }
             }
             return HitStamp;
