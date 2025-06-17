@@ -23,10 +23,10 @@ namespace IntelligenceInvestigation.Factory
             List<string> Types = new List<string>()
             {
                 "Audio",
-                "Thermal",
+                //"Thermal",
                 "Pulse",
-                "Motion",
-                "Magentic",
+                //"Motion",
+                //"Magentic",
                 "Signal",
                 "Light"
             };

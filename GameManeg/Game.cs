@@ -6,6 +6,7 @@ using System.Threading.Channels;
 using System.Threading.Tasks;
 using IntelligenceInvestigation.Entities;
 using IntelligenceInvestigation.Factory;
+using IntelligenceInvestigation.InterFaces;
 
 namespace IntelligenceInvestigation.GameManeg
 {
@@ -25,7 +26,6 @@ namespace IntelligenceInvestigation.GameManeg
                 int index = int.Parse(Console.ReadLine()!);
                 Console.WriteLine("Enter the type of sensor you would like to insert: ");
                 string type = Console.ReadLine()!;
-                //sensor.GetType() vv = (sensor.GetType)SensorFactory.StartInstans(type);
                 Sensor sensor = SensorFactory.StartInstans(type);
                 if(sensor != null)
                 {
@@ -34,6 +34,26 @@ namespace IntelligenceInvestigation.GameManeg
                         int temp = iranianAgent.Adjustment();
                         Console.WriteLine($"You scored {temp}/{iranianAgent.LenTypes} times");
                         won = temp;
+                        if (sensor is IInformerT informer)
+                        {
+                            Dictionary<string, Object> Information = new Dictionary<string, object>()
+                            {
+                                ["The name of this agent is: "] = iranianAgent.Name,
+                                ["The rank of this Agent is: "] = iranianAgent.Rank,
+                                //["The number of sensors this agent is sensitive to is: "] = iranianAgent.LenTypes
+                            };
+                            int count = 0;
+                            foreach (string inform in Information.Keys)
+                            {
+                                
+                                Console.WriteLine($"{inform}{Information[inform]}");
+                                count++;
+                                if (count > informer.AmountInformation)
+                                {
+                                    break;
+                                }
+                            }
+                        }
                     }
                     else
                     {
