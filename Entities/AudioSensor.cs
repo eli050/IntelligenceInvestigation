@@ -8,7 +8,6 @@ namespace IntelligenceInvestigation.Entities
 {
     public class AudioSensor: Sensor
     {
-        public bool broken = false;
         public AudioSensor(string type): base(type)
         {
 

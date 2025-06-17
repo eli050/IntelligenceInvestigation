@@ -65,9 +65,8 @@ namespace IntelligenceInvestigation.Entities
                         types.RemoveAt(i);
                         break;
                     }
-                    if (sensor.broken)
+                    if (sensor is IBreakabale b && b.IsBroken())
                     {
-                        //HitStamp--;
                         ActivatSensor.Remove(sensor);  
                     }
                 }

@@ -8,7 +8,6 @@ namespace IntelligenceInvestigation.Entities
 {
     public abstract class Sensor
     {
-        public bool broken;
         public string Type { get; set; }
         public Sensor(string type)
         {
