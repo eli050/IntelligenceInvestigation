@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntelligenceInvestigation.Entities
 {
-    public interface IInformer
+    public interface IInformerT
     {
-        public bool NeedToInform();
     }
 }
