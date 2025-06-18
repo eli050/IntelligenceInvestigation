@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IntelligenceInvestigation.Entities
+﻿namespace IntelligenceInvestigation.Entities
 {
     public abstract class Sensor
     {

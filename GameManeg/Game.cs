@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Channels;
-using System.Threading.Tasks;
-using IntelligenceInvestigation.Entities;
+﻿using IntelligenceInvestigation.Entities;
 using IntelligenceInvestigation.Factory;
+using IntelligenceInvestigation.InterFaces;
 
 namespace IntelligenceInvestigation.GameManeg
 {
@@ -17,6 +12,11 @@ namespace IntelligenceInvestigation.GameManeg
             Console.WriteLine("Hello and welcome to the game.\n" +
                 $"You are investigating Agent {iranianAgent.Name}"
                 );
+            foreach (string item in iranianAgent.SensorTypes)
+            {
+                Console.Write(item);
+            }
+
             int won = 0;
             while (won != iranianAgent.LenTypes)
             {
@@ -25,15 +25,16 @@ namespace IntelligenceInvestigation.GameManeg
                 int index = int.Parse(Console.ReadLine()!);
                 Console.WriteLine("Enter the type of sensor you would like to insert: ");
                 string type = Console.ReadLine()!;
-                //sensor.GetType() vv = (sensor.GetType)SensorFactory.StartInstans(type);
                 Sensor sensor = SensorFactory.StartInstans(type);
-                if(sensor != null)
+                if (sensor != null)
                 {
                     if (iranianAgent.AddOrChangeSensor(index, sensor))
                     {
-                        int temp = iranianAgent.Adjustment();
+                        int temp = iranianAgent.NumOfMatch();
                         Console.WriteLine($"You scored {temp}/{iranianAgent.LenTypes} times");
                         won = temp;
+                        _checkBrokens();
+                        _printInformation(sensor);
                     }
                     else
                     {
@@ -44,9 +45,45 @@ namespace IntelligenceInvestigation.GameManeg
                 {
                     Console.WriteLine("There is no such sensor.");
                 }
-               
+
             }
             Console.WriteLine("You won!!");
+        }
+        private static void _printInformation(Sensor sensor)
+        {
+            if (sensor is IInformerT informer && informer.FindOut)
+            {
+                List<string> Information = new List<string>()
+                            {
+                                $"The name of this agent is: {iranianAgent.Name}",
+                                $"The rank of this Agent is:  {iranianAgent.Rank}",
+                                $"The number of sensors this agent is sensitive to is:  {iranianAgent.LenTypes}"
+                            };
+                Random random = new Random();
+                for (int i = 0; i < informer.AmountInformation; i++)
+                {
+                    int INX = random.Next(Information.Count);
+                    Console.WriteLine(Information[INX]);
+
+                }
+            }
+        }
+        private static void _breakIfBroken(Sensor sensor)
+        {
+            if (sensor is IBreakabale breakabale && breakabale.IsBroken())
+            {
+                iranianAgent.ActivatSensor.Remove(sensor);
+            }
+        }
+        private static void _checkBrokens()
+        { 
+            for (int i = iranianAgent.ActivatSensor.Count - 1; i >= 0; i--)
+            {
+                if (iranianAgent.ActivatSensor[i] is IBreakabale breakabale)
+                {
+                    _breakIfBroken(iranianAgent.ActivatSensor[i]);
+                }
+            }
         }
     }
 }

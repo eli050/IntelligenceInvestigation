@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IntelligenceInvestigation.Entities;
+﻿using IntelligenceInvestigation.Entities;
 
 namespace IntelligenceInvestigation.Factory
 {
@@ -24,9 +19,9 @@ namespace IntelligenceInvestigation.Factory
                 case "Magentic":
                     return null;
                 case "Signal":
-                    return null;
+                    return new SignalSensor(type);
                 case "Light":
-                    return null;
+                    return new LightSensor(type);
                 default:
                     return null;
 
