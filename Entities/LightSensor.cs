@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IntelligenceInvestigation.InterFaces;
+﻿using IntelligenceInvestigation.InterFaces;
 
 namespace IntelligenceInvestigation.Entities
 {
     public class LightSensor:Sensor,IInformerT
     {
+        public bool FindOut { get; set; }
         public int AmountInformation { get; set; }
         public LightSensor(string type) : base(type)
         {
+            FindOut = false;
             AmountInformation = 2;
         }
         public override bool Activate(string SensorType)

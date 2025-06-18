@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IntelligenceInvestigation.InterFaces;
+﻿using IntelligenceInvestigation.InterFaces;
 
 namespace IntelligenceInvestigation.Entities
 {
@@ -51,26 +45,24 @@ namespace IntelligenceInvestigation.Entities
             }
             SensorTypes = sensorTypes;
         }
-        public int Adjustment()
+        public int NumOfMatch()
         {
             int HitStamp = 0;
-            List<string> types = new List<string>();
-            types.AddRange(SensorTypes);
+            List<string> types = new List<string>(SensorTypes);
+            //List<Sensor> sensors = new List<Sensor>(ActivatSensor);
             foreach (Sensor sensor in ActivatSensor)
             {
                 for(int i = 0; i < types.Count; i++)
                 {
                     if (sensor.Activate(types[i]))
                     {
+                        _informerAndMatch(sensor);
                         HitStamp++;
                         types.RemoveAt(i);
                         break;
-                    }
-                    if (sensor is IBreakabale b && b.IsBroken())
-                    {
-                        ActivatSensor.Remove(sensor);  
-                    }
+                    } 
                 }
+                _breakTimer(sensor);
             }
             return HitStamp;
         }
@@ -89,6 +81,20 @@ namespace IntelligenceInvestigation.Entities
             else
             {
                 return false;
+            }
+        }
+        private void _informerAndMatch(Sensor sensor)
+        {
+            if (sensor is IInformerT informer)
+            {
+                informer.FindOut = true;
+            }
+        }
+        private  void _breakTimer(Sensor sensor)
+        {
+            if (sensor is IBreakabale breakabale)
+            {
+                breakabale.Count++;
             }
         }
 
