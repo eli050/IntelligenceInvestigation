@@ -12,6 +12,11 @@ namespace IntelligenceInvestigation.GameManeg
             Console.WriteLine("Hello and welcome to the game.\n" +
                 $"You are investigating Agent {iranianAgent.Name}"
                 );
+            foreach (string item in iranianAgent.SensorTypes)
+            {
+                Console.Write(item);
+            }
+
             int won = 0;
             while (won != iranianAgent.LenTypes)
             {
@@ -29,7 +34,6 @@ namespace IntelligenceInvestigation.GameManeg
                         Console.WriteLine($"You scored {temp}/{iranianAgent.LenTypes} times");
                         won = temp;
                         _checkBrokens();
-                        //_breakIfBroken(sensor);
                         _printInformation(sensor);
                     }
                     else
@@ -41,13 +45,13 @@ namespace IntelligenceInvestigation.GameManeg
                 {
                     Console.WriteLine("There is no such sensor.");
                 }
-               
+
             }
             Console.WriteLine("You won!!");
         }
         private static void _printInformation(Sensor sensor)
         {
-            if(sensor is IInformerT informer && informer.FindOut)
+            if (sensor is IInformerT informer && informer.FindOut)
             {
                 List<string> Information = new List<string>()
                             {
@@ -69,17 +73,14 @@ namespace IntelligenceInvestigation.GameManeg
             if (sensor is IBreakabale breakabale && breakabale.IsBroken())
             {
                 iranianAgent.ActivatSensor.Remove(sensor);
-                Console.WriteLine(iranianAgent.ActivatSensor.Count);
             }
         }
         private static void _checkBrokens()
-        {
-            //foreach (Sensor sensor in iranianAgent.ActivatSensor)
-            for (int i =0; i < iranianAgent.ActivatSensor.Count; i++)
+        { 
+            for (int i = iranianAgent.ActivatSensor.Count - 1; i >= 0; i--)
             {
-                if(iranianAgent.ActivatSensor[i] is IBreakabale breakabale)
+                if (iranianAgent.ActivatSensor[i] is IBreakabale breakabale)
                 {
-                    Console.WriteLine(breakabale.Count); 
                     _breakIfBroken(iranianAgent.ActivatSensor[i]);
                 }
             }

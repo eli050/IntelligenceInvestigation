@@ -23,8 +23,8 @@ namespace IntelligenceInvestigation.Entities
             }
         }
         public int LenTypes { get; set; }
-        public List<string> SensorTypes;
-        public IranianAgent(string name, string rank, List<string> sensorTypes)
+        public List<string> Weakness;
+        public IranianAgent(string name, string rank, List<string> weakness)
         {
             Name = name;
             _rank = rank;
@@ -43,13 +43,12 @@ namespace IntelligenceInvestigation.Entities
                     LenTypes = 8;
                     break;
             }
-            SensorTypes = sensorTypes;
+            Weakness = weakness;
         }
         public int NumOfMatch()
         {
             int HitStamp = 0;
-            List<string> types = new List<string>(SensorTypes);
-            //List<Sensor> sensors = new List<Sensor>(ActivatSensor);
+            List<string> types = new List<string>(Weakness);
             foreach (Sensor sensor in ActivatSensor)
             {
                 for(int i = 0; i < types.Count; i++)
