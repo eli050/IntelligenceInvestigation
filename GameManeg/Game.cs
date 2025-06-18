@@ -1,4 +1,5 @@
-﻿using IntelligenceInvestigation.Entities;
+﻿using IntelligenceInvestigation.Entities.Agents;
+using IntelligenceInvestigation.Entities.Sensors;
 using IntelligenceInvestigation.Factory;
 using IntelligenceInvestigation.InterFaces;
 
@@ -6,13 +7,13 @@ namespace IntelligenceInvestigation.GameManeg
 {
     public static class Game
     {
-        static IranianAgent iranianAgent = AgentFactory.StartInstans();
+        static IranianAgent iranianAgent = AgentFactory.StartInstans(1);
         public static void StartGame()
         {
             Console.WriteLine("Hello and welcome to the game.\n" +
                 $"You are investigating Agent {iranianAgent.Name}"
                 );
-            foreach (string item in iranianAgent.SensorTypes)
+            foreach (string item in iranianAgent.Weakness)
             {
                 Console.Write(item);
             }

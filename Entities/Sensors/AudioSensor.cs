@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-namespace IntelligenceInvestigation.Entities
+namespace IntelligenceInvestigation.Entities.Sensors
 {
     public class AudioSensor: Sensor
     {

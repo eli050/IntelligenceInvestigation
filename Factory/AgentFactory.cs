@@ -1,20 +1,31 @@
-﻿using IntelligenceInvestigation.Entities;
+﻿using System;
+using IntelligenceInvestigation.Entities.Agents;
 
 namespace IntelligenceInvestigation.Factory
 {
     static public class AgentFactory
     {
-        static public IranianAgent StartInstans()
+        static public IranianAgent StartInstans(int stage)
+        {
+            switch (stage)
+            {
+                case 1:
+                    string name = GetName();
+                    string[] weakness = GetWeakness(2);
+                    return new FootSoldir(name, weakness);
+                case 2:
+                    return null;
+                case 3:
+                    return null;
+                case 4:
+                    return null;
+                default:
+                    return null;
+            }
+        }
+        private static string[] GetWeakness(int amount)
         {
             Random random = new Random();
-            List<string> Ranks = new List<string>()
-            {
-                "Foot Soldier",
-                "Squad Leader",
-                "Senior Commander",
-                "Organization Leader"
-
-            };
             List<string> Types = new List<string>()
             {
                 "Audio",
@@ -25,6 +36,18 @@ namespace IntelligenceInvestigation.Factory
                 "Signal",
                 "Light"
             };
+            List<string> weakness = new List<string>();
+            for (int i = 0; i < amount; i++)
+            {
+                string type = Types[random.Next(Types.Count)];
+                weakness.Add(type);
+            }
+            return weakness.ToArray();
+        }
+        private static string GetName()
+        {
+            Random random = new Random();
+
             List<string> iranianNames = new List<string>
             {
                 "Ali",
@@ -79,15 +102,7 @@ namespace IntelligenceInvestigation.Factory
                 "Sepideh"
             };
             string name = iranianNames[random.Next(iranianNames.Count)];
-            string rank = Ranks[random.Next(Ranks.Count)];
-            List<string> TypesOfSensor = new List<string>();
-            IranianAgent iranianAgent = new IranianAgent(name, rank, TypesOfSensor);
-            for (int i =0; i< iranianAgent.LenTypes; i++)
-            {
-                string type = Types[random.Next(Types.Count)];
-                iranianAgent.SensorTypes.Add(type);
-            }
-            return iranianAgent;
+            return name;
         }
         
     }
