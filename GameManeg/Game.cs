@@ -1,4 +1,5 @@
 ﻿using IntelligenceInvestigation.Entities.Agents;
+using IntelligenceInvestigation.Entities.Players;
 using IntelligenceInvestigation.Entities.Sensors;
 using IntelligenceInvestigation.Factory;
 using IntelligenceInvestigation.InterFaces;
@@ -7,48 +8,58 @@ namespace IntelligenceInvestigation.GameManeg
 {
     public static class Game
     {
-        static IranianAgent iranianAgent = AgentFactory.StartInstans(1);
+        static IranianAgent iranianAgent; 
         public static void StartGame()
         {
-            Console.WriteLine("Hello and welcome to the game.\n" +
-                $"You are investigating Agent {iranianAgent.Name}"
-                );
-            foreach (string item in iranianAgent.Weakness)
+            int HighestStage = 1;
+            Console.WriteLine("Hello and welcome to the game: Discover the agent.\n");
+            Console.WriteLine("Enter yore name: ");
+            string Name = Console.ReadLine()!;
+            Console.WriteLine("Enter a username: ");
+            string UserName = Console.ReadLine()!;
+            Player player = new Player(Name, UserName);
+            iranianAgent = AgentFactory.StartInstans(player.Stage);
+            while (player.Stage <= HighestStage)
             {
-                Console.Write(item);
-            }
-
-            int won = 0;
-            while (won != iranianAgent.LenTypes)
-            {
-                Console.WriteLine($"At what location would you like to insert the sensor?\n" +
-                    $" (0-{iranianAgent.LenTypes - 1}) or anter -1 to add to the end");
-                int index = int.Parse(Console.ReadLine()!);
-                Console.WriteLine("Enter the type of sensor you would like to insert: ");
-                string type = Console.ReadLine()!;
-                Sensor sensor = SensorFactory.StartInstans(type);
-                if (sensor != null)
+                Console.WriteLine($"You are in stage {player.Stage} of the game.");
+                Console.WriteLine($"You are investigating Agent {iranianAgent.Name}");
+    
+                int won = 0;
+                while (won != iranianAgent.LenTypes)
                 {
-                    if (iranianAgent.AddOrChangeSensor(index, sensor))
+                    Console.WriteLine($"At what location would you like to insert the sensor?\n" +
+                        $" (0-{iranianAgent.LenTypes - 1}) or anter -1 to add to the end");
+                    int index = int.Parse(Console.ReadLine()!);
+                    Console.WriteLine("Enter the type of sensor you would like to insert: ");
+                    string type = Console.ReadLine()!;
+                    Sensor sensor = SensorFactory.StartInstans(type);
+                    if (sensor != null)
                     {
-                        int temp = iranianAgent.NumOfMatch();
-                        Console.WriteLine($"You scored {temp}/{iranianAgent.LenTypes} times");
-                        won = temp;
-                        _checkBrokens();
-                        _printInformation(sensor);
+                        if (iranianAgent.AddOrChangeSensor(index, sensor))
+                        {
+                            int temp = iranianAgent.NumOfMatch();
+                            Console.WriteLine($"You scored {temp}/{iranianAgent.LenTypes} times");
+                            won = temp;
+                            _deleteBrokens();
+                            _printInformation(sensor);
+                        }
+                        else
+                        {
+                            Console.WriteLine("invalid character or index out of range, please enter again");
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("invalid character or index out of range, please enter again");
+                        Console.WriteLine("There is no such sensor.");
                     }
-                }
-                else
-                {
-                    Console.WriteLine("There is no such sensor.");
-                }
 
+                }
+                Console.WriteLine($"You have defeated Agent {iranianAgent.Name} and you move on to the next level.");
+                player.Stage++;
+                iranianAgent = AgentFactory.StartInstans(player.Stage);
             }
-            Console.WriteLine("You won!!");
+            Console.WriteLine("There is no next step, you won!!!\n" +
+                "Wubba Lubba dub-dub");   
         }
         private static void _printInformation(Sensor sensor)
         {
@@ -76,7 +87,7 @@ namespace IntelligenceInvestigation.GameManeg
                 iranianAgent.ActivatSensor.Remove(sensor);
             }
         }
-        private static void _checkBrokens()
+        private static void _deleteBrokens()
         { 
             for (int i = iranianAgent.ActivatSensor.Count - 1; i >= 0; i--)
             {

@@ -12,7 +12,7 @@ namespace IntelligenceInvestigation.Entities.Players
         public string Name { get; private set; }
         public string NickName { get; private set; }
         public int Stage;
-        public Player(string name, string nickName, int stage = 0)
+        public Player(string name, string nickName, int stage = 1)
         {
             Name = name;
             NickName = nickName;
@@ -20,7 +20,7 @@ namespace IntelligenceInvestigation.Entities.Players
         }
         public Player(int id, string name,
                       string nickName,
-                      int stage = 0)
+                      int stage = 1)
             : this(name, nickName, stage)
         {
             Id = id;
