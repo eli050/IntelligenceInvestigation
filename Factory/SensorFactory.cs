@@ -1,4 +1,5 @@
 ﻿using IntelligenceInvestigation.Entities;
+using IntelligenceInvestigation.Entities.Sensors;
 
 namespace IntelligenceInvestigation.Factory
 {

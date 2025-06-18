@@ -1,15 +1,15 @@
 ﻿using IntelligenceInvestigation.InterFaces;
 
-namespace IntelligenceInvestigation.Entities
+namespace IntelligenceInvestigation.Entities.Sensors
 {
-    public class LightSensor:Sensor,IInformerT
+    public class SignalSensor:Sensor,IInformerT
     {
         public bool FindOut { get; set; }
         public int AmountInformation { get; set; }
-        public LightSensor(string type) : base(type)
+        public SignalSensor(string type) : base(type)
         {
             FindOut = false;
-            AmountInformation = 2;
+            AmountInformation = 1;
         }
         public override bool Activate(string SensorType)
         {

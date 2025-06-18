@@ -1,4 +1,4 @@
-﻿namespace IntelligenceInvestigation.Entities
+﻿namespace IntelligenceInvestigation.Entities.Sensors
 {
     public abstract class Sensor
     {

@@ -1,6 +1,6 @@
 ﻿using IntelligenceInvestigation.InterFaces;
 
-namespace IntelligenceInvestigation.Entities
+namespace IntelligenceInvestigation.Entities.Sensors
 {
     public class PulseSensor: Sensor, IBreakabale
     {
