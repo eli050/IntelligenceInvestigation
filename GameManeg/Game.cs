@@ -1,27 +1,26 @@
-﻿using IntelligenceInvestigation.Entities.Agents;
+﻿using System.Diagnostics.Metrics;
+using IntelligenceInvestigation.Entities.Agents;
 using IntelligenceInvestigation.Entities.Players;
 using IntelligenceInvestigation.Entities.Sensors;
 using IntelligenceInvestigation.Factory;
 using IntelligenceInvestigation.InterFaces;
+using IntelligenceInvestigation.SQL.DAL;
+using IntelligenceInvestigation.SQL.DB;
 
 namespace IntelligenceInvestigation.GameManeg
 {
     public static class Game
     {
-        static IranianAgent iranianAgent; 
+        static IranianAgent iranianAgent;
+        static MySQLData SQLData = new MySQLData();
+        static PlayersDAL playersDAL = new PlayersDAL(SQLData);
         public static void StartGame()
         {
             int HighestStage = 2;
-            Console.WriteLine("Hello and welcome to the game: Discover the agent.\n");
-            Console.WriteLine("Enter yore name: ");
-            string Name = Console.ReadLine()!;
-            Console.WriteLine("Enter a username: ");
-            string UserName = Console.ReadLine()!;
-            Player player = new Player(Name, UserName);
+            Player player = StartMenu(); 
             iranianAgent = AgentFactory.StartInstans(player.Stage);
             while (player.Stage <= HighestStage)
             {
-                Console.WriteLine();
                 Console.WriteLine($"You are in stage {player.Stage} of the game.\n");
                 Console.WriteLine($"You are investigating Agent {iranianAgent.Name}\n\n");
     
@@ -119,6 +118,79 @@ namespace IntelligenceInvestigation.GameManeg
                 }
             }
 
+        }
+        private static Player LogIn()
+        {
+            int count = 0;
+            while(count < 3)
+            {
+                try
+                {
+                    Console.WriteLine("Enter a username: ");
+                    string UserName = Console.ReadLine()!;
+                    Player player = playersDAL.GetByUserName(UserName);
+                    return player;
+                }
+                catch(Exception e)
+                {
+                    //Console.WriteLine(e.Message);
+                    count++;
+                    Console.WriteLine($"No user with that username was found, please try again ({3-count} more attempts)");
+                }
+            }
+            Console.WriteLine("You have tried too many times,\n" +
+                "you are moving on to registration.");
+            return SignIn();
+            
+        }
+        private static Player SignIn()
+        {
+            
+            Console.WriteLine("Enter yore name: ");
+            string Name = Console.ReadLine()!;
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine("Enter a username: ");
+                    string UserName = Console.ReadLine()!;
+                    Player player = new Player(Name, UserName);
+                    playersDAL.InsertUser(player);
+                    return player;
+                }
+                catch(Exception e)
+                {
+                    //Console.WriteLine(e.Message);
+                    Console.WriteLine("Username already exists, choose another.");
+                }
+            }
+        }
+        private static Player StartMenu()
+        {
+            bool stopFlag = true;
+            while (stopFlag)
+            {
+                Console.WriteLine("Hello and welcome to the game: Discover the agent.\n" +
+               "To log in press 1" +
+               "\nTo register press 2");
+                Player player;
+                string select = Console.ReadLine()!;
+                switch (select)
+                {
+                    case "1":
+                        player = LogIn();
+                        return player;
+                    case "2":
+                        player = SignIn();
+                        return player;
+                    default:
+                        Console.WriteLine("There is no such option in the menu yet. Please select again.");
+                        break;
+                        
+
+                }
+            }
+            return null;
         }
     }
 }
