@@ -27,8 +27,8 @@ namespace IntelligenceInvestigation.GameManeg
                 int won = 0;
                 while (won != iranianAgent.LenTypes)
                 {
-                    Console.WriteLine($"At what location would you like to insert the sensor?\n" +
-                        $" (0-{iranianAgent.LenTypes - 1}) or anter -1 to add to the end");
+                    Console.WriteLine($"Please enter the position where you’d like to add a sensor—use an index\n" +
+                        $" from 0 through {iranianAgent.LenTypes - 1} (inclusive) to replace an existing value, or -1 to append it to the end.");
                     int index = int.Parse(Console.ReadLine()!);
                     Console.WriteLine("Enter the type of sensor you would like to insert: ");
                     string type = Console.ReadLine()!;
