@@ -11,12 +11,10 @@ namespace IntelligenceInvestigation.Entities.Sensors
         }
         public override bool Activate(string type)
         {
-            //Count++;
             return type == Type;
         }
         public bool IsBroken()
         {
-            //Console.WriteLine(Count);
             return Count == 3;
         }
     }

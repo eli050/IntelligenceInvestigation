@@ -11,7 +11,7 @@ namespace IntelligenceInvestigation.GameManeg
         static IranianAgent iranianAgent; 
         public static void StartGame()
         {
-            int HighestStage = 1;
+            int HighestStage = 2;
             Console.WriteLine("Hello and welcome to the game: Discover the agent.\n");
             Console.WriteLine("Enter yore name: ");
             string Name = Console.ReadLine()!;
@@ -21,14 +21,15 @@ namespace IntelligenceInvestigation.GameManeg
             iranianAgent = AgentFactory.StartInstans(player.Stage);
             while (player.Stage <= HighestStage)
             {
-                Console.WriteLine($"You are in stage {player.Stage} of the game.");
-                Console.WriteLine($"You are investigating Agent {iranianAgent.Name}");
+                Console.WriteLine();
+                Console.WriteLine($"You are in stage {player.Stage} of the game.\n");
+                Console.WriteLine($"You are investigating Agent {iranianAgent.Name}\n\n");
     
                 int won = 0;
                 while (won != iranianAgent.LenTypes)
                 {
-                    Console.WriteLine($"At what location would you like to insert the sensor?\n" +
-                        $" (0-{iranianAgent.LenTypes - 1}) or anter -1 to add to the end");
+                    Console.WriteLine($"Please enter the position where you’d like to add a sensor—use an index\n" +
+                        $" from 0 through {iranianAgent.LenTypes - 1} (inclusive) to replace an existing value, or -1 to append it to the end.");
                     int index = int.Parse(Console.ReadLine()!);
                     Console.WriteLine("Enter the type of sensor you would like to insert: ");
                     string type = Console.ReadLine()!;
@@ -38,10 +39,17 @@ namespace IntelligenceInvestigation.GameManeg
                         if (iranianAgent.AddOrChangeSensor(index, sensor))
                         {
                             int temp = iranianAgent.NumOfMatch();
-                            Console.WriteLine($"You scored {temp}/{iranianAgent.LenTypes} times");
+                            Console.WriteLine($"You scored {temp}/{iranianAgent.LenTypes} times\n");
+                            Console.WriteLine("The attached sensors are:\n");
+                            foreach(Sensor sen in iranianAgent.ActivatSensor)
+                            {
+                                Console.Write($"{sen.Type} ");
+                            }
+                            Console.WriteLine();
                             won = temp;
                             _deleteBrokens();
                             _printInformation(sensor);
+                            _timerAttack();
                         }
                         else
                         {
@@ -57,6 +65,7 @@ namespace IntelligenceInvestigation.GameManeg
                 Console.WriteLine($"You have defeated Agent {iranianAgent.Name} and you move on to the next level.");
                 player.Stage++;
                 iranianAgent = AgentFactory.StartInstans(player.Stage);
+
             }
             Console.WriteLine("There is no next step, you won!!!\n" +
                 "Wubba Lubba dub-dub");   
@@ -72,10 +81,11 @@ namespace IntelligenceInvestigation.GameManeg
                                 $"The number of sensors this agent is sensitive to is:  {iranianAgent.LenTypes}"
                             };
                 Random random = new Random();
-                for (int i = 0; i < informer.AmountInformation; i++)
+                for (int _ = 0; _ < informer.AmountInformation; _++)
                 {
                     int INX = random.Next(Information.Count);
                     Console.WriteLine(Information[INX]);
+                    Information.RemoveAt(INX);
 
                 }
             }
@@ -85,6 +95,7 @@ namespace IntelligenceInvestigation.GameManeg
             if (sensor is IBreakabale breakabale && breakabale.IsBroken())
             {
                 iranianAgent.ActivatSensor.Remove(sensor);
+                Console.WriteLine("one sensor was deleted\n");
             }
         }
         private static void _deleteBrokens()
@@ -96,6 +107,18 @@ namespace IntelligenceInvestigation.GameManeg
                     _breakIfBroken(iranianAgent.ActivatSensor[i]);
                 }
             }
+        }
+        private static void _timerAttack()
+        {
+            if (iranianAgent is IAttacker attacker)
+            {
+                attacker.Counter++;
+                if (attacker.IfAttack())
+                {
+                    attacker.ToAttack(iranianAgent.ActivatSensor);
+                }
+            }
+
         }
     }
 }
