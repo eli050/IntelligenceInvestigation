@@ -7,14 +7,18 @@ namespace IntelligenceInvestigation.Factory
     {
         static public IranianAgent StartInstans(int stage)
         {
+            string name;
+            string[] weakness;
             switch (stage)
             {
                 case 1:
-                    string name = GetName();
-                    string[] weakness = GetWeakness(2);
+                    name = GetName();
+                    weakness = GetWeakness(2);
                     return new FootSoldir(name, weakness);
                 case 2:
-                    return null;
+                    name = GetName();
+                    weakness = GetWeakness(4);
+                    return new SquadLeader(name, weakness);
                 case 3:
                     return null;
                 case 4:

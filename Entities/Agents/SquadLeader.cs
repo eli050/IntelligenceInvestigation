@@ -65,6 +65,8 @@ namespace IntelligenceInvestigation.Entities.Agents
         {
             Random random = new Random();
             sensors.RemoveAt(random.Next(sensors.Count));
+            Counter = 0;
+            Console.WriteLine("one sensor was deleted\n");
         }
         private void _informerAndMatch(Sensor sensor)
         {
