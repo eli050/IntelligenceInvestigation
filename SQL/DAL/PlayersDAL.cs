@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using IntelligenceInvestigation.Entities.Players;
@@ -53,6 +54,28 @@ namespace IntelligenceInvestigation.SQL.DAL
                 conn = _mySql.GetConnection();
                 string query = "INSERT INTO players(name,nick_name)" +
                     $"VALUES('{player.Name}','{player.NickName}');";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    _mySql.CloseConnection(conn);
+                }
+            }
+        }
+        public void UpdateUser(Player player)
+        {
+            MySqlConnection? conn = null;
+            try
+            {
+                conn = _mySql.GetConnection();
+                string query = $"UPDATE players SET players.stage = {player.Stage} WHERE players.nick_name = '{player.NickName}';";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.ExecuteNonQuery();
             }

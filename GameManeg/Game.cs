@@ -63,6 +63,7 @@ namespace IntelligenceInvestigation.GameManeg
                 }
                 Console.WriteLine($"You have defeated Agent {iranianAgent.Name} and you move on to the next level.");
                 player.Stage++;
+                playersDAL.UpdateUser(player);
                 iranianAgent = AgentFactory.StartInstans(player.Stage);
 
             }
